@@ -1,2 +1,2 @@
 # epopeia-authorization
-A payments authorization system for financial institutions
+A payments authorization module for financial institutions
