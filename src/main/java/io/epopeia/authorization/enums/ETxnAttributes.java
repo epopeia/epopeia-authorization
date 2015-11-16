@@ -1,0 +1,10 @@
+package io.epopeia.authorization.enums;
+
+public enum ETxnAttributes {
+	ATRIBUTOS_TRANSACAO,
+	TIPO_TRANSACAO_ID,
+	IDENTIFICADOR,
+	VERIFICAR_CARTAO_ATIVO,
+	VERIFICAR_CONTA_ATIVA,
+	VERIFICAR_VALIDADE_CARTAO
+}

@@ -1,0 +1,18 @@
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="ehcache.xsd"
+	updateCheck="false"
+	monitoring="off"
+	dynamicConfig="false">
+
+    <cache name="bins" maxEntriesLocalHeap="30" eternal="false" timeToIdleSeconds="43200" timeToLiveSeconds="86400" memoryStoreEvictionPolicy="FIFO"/>
+    <cache name="bandeiras" maxEntriesLocalHeap="30" eternal="false" timeToIdleSeconds="43200" timeToLiveSeconds="86400" memoryStoreEvictionPolicy="FIFO"/>
+    <cache name="chaves" maxEntriesLocalHeap="30" eternal="false" timeToIdleSeconds="43200" timeToLiveSeconds="86400" memoryStoreEvictionPolicy="FIFO"/>
+	<cache name="tiposTransacoes" maxEntriesLocalHeap="50" eternal="false" timeToIdleSeconds="43200" timeToLiveSeconds="43200" memoryStoreEvictionPolicy="FIFO"/>
+	<cache name="whitelist" maxEntriesLocalHeap="100" eternal="false" timeToIdleSeconds="43200" timeToLiveSeconds="43200" memoryStoreEvictionPolicy="FIFO"/>
+	<cache name="parametrosSistemas" maxEntriesLocalHeap="100" eternal="false" timeToIdleSeconds="43200" timeToLiveSeconds="43200" memoryStoreEvictionPolicy="FIFO"/>
+	<cache name="parametrosProdutos" maxEntriesLocalHeap="100" eternal="false" timeToIdleSeconds="43200" timeToLiveSeconds="43200" memoryStoreEvictionPolicy="FIFO"/>
+	<cache name="parametrosModalidades" maxEntriesLocalHeap="200" eternal="false" timeToIdleSeconds="43200" timeToLiveSeconds="43200" memoryStoreEvictionPolicy="FIFO"/>
+	<cache name="parametrosCanais" maxEntriesLocalHeap="5000" eternal="false" timeToIdleSeconds="1800" timeToLiveSeconds="7200" memoryStoreEvictionPolicy="FIFO"/>
+	<cache name="parametrosContas" maxEntriesLocalHeap="1000" eternal="false" timeToIdleSeconds="300" timeToLiveSeconds="600" memoryStoreEvictionPolicy="FIFO"/>
+
+</ehcache>

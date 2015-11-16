@@ -1,0 +1,35 @@
+<!-- No log status and events of logback -->
+<configuration debug="false" scan="false">
+
+  <property resource="authorization.properties" />
+
+  <!-- APPENDERS -->
+  <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+    <filter class="io.epopeia.authorization.helper.HibernateSqlCounter" />
+    <file>${logback.file}</file>
+    <encoder>
+      <pattern>${logback.pattern}</pattern>
+    </encoder>
+  </appender>
+
+  <appender name="LOGSTASH" class="ch.qos.logback.core.FileAppender">
+    <file>${logback.logstash.file}</file>
+    <encoder>
+      <pattern>%msg%n</pattern>
+    </encoder>
+  </appender>
+
+  <!-- LOGGERS -->
+  <root level="${logback.level}">
+  	<appender-ref ref="FILE"/>
+  </root>
+
+  <logger name="io.epopeia.authorization.participant.LogStash" additivity="false" level="INFO">
+    <appender-ref ref="LOGSTASH" />
+  </logger>
+
+  <logger name="org.hibernate" additivity="false" level="DEBUG">
+    <appender-ref ref="FILE" />
+  </logger>
+
+</configuration>
