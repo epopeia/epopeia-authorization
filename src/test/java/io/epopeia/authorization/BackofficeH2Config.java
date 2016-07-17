@@ -74,6 +74,7 @@ public class BackofficeH2Config {
 	/**
 	 * Manter comentado pq nao sabemos se o Jenkins tera essas portas disponiveis.
 	 * Utilize esses beans como ferramenta visual apenas durante o desenvolvimento.
+	 * Abra o browser e use a jdbcUrl jdbc:h2:mem:testdb
 	 * 
 	@Bean(name = "h2WebServer", initMethod="start", destroyMethod="stop")
 	public org.h2.tools.Server h2WebServer() throws SQLException {
