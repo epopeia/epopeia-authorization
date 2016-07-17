@@ -1,5 +1,6 @@
 package io.epopeia.authorization.bo;
 
+import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,7 +8,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
-import io.epopeia.authorization.domain.backoffice.Key;
 import io.epopeia.authorization.domain.backoffice.Modality;
 import io.epopeia.authorization.domain.backoffice.ModalityKey;
 import io.epopeia.authorization.domain.backoffice.Product;
@@ -53,29 +53,17 @@ public class HsmBO {
 	/**
 	 * Since a product has many modalities, lets return the first object in the
 	 * set just to get any modality Id of this product.
-	 * TODO: Refatorar para utilizar Optionals do java 8
 	 */
 	@Cacheable(value = "chaves", condition = "(#bin?:'').length() == 6 and (#keyType?:'').length() == 3", unless = "#result == null")
 	public String getKey(String bin, String keyType) {
-		if (bin == null || bin.length() != 6 || keyType == null
-				|| keyType.length() != 3)
-			return null;
-		Product p = produtos.findByBin(bin);
-		if (p != null) {
-			Modality m = p.getModalidades().iterator().next();
-			if (m != null) {
-				Set<ModalityKey> mks = modalidadeChaves.findByModalidade(m);
-				if (mks != null) {
-					for (ModalityKey mk : mks) {
-						Key k = mk.getChave();
-						if (k != null && k.getCodigoTipoChave().equals(keyType)
-								&& k.getAtiva().equals('S'))
-							return k.getChave();
-					}
-				}
-			}
-		}
-		return null;
+		final Optional<String> oBin = Optional.ofNullable(bin);
+		final Optional<Product> oProduct = Optional.ofNullable(produtos.findByBin(oBin.orElse(null)));
+		final Optional<String> oKeyType = Optional.ofNullable(keyType);
+		final Optional<Modality> oModality = Optional.ofNullable(oProduct.orElse(null).getModalidades().iterator().next());
+		final Optional<Set<ModalityKey>> oMks = Optional.ofNullable(modalidadeChaves.findByModalidade(oModality.orElse(null)));
+		return oMks.orElse(null).stream().filter(mk -> mk.getChave() != null && mk.getChave().getAtiva().equals('S') &&
+				mk.getChave().getCodigoTipoChave().equals(oKeyType.orElseGet(null)))
+					.findAny().orElse(null).getChave().getChave();
 	}
 
 	public void validateSecurityCodes(FieldSet imf) throws Exception {

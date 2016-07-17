@@ -85,6 +85,9 @@ public class ParameterBO {
 						.findByCodigoContaTitular(codigoContaTitular));
 	}
 
+	/**
+	 * TODO: Convert to use stream with collector in java 8
+	 */
 	private Map<String, String> convertResultSetIntoMap(List<AuthorizationParameter> resultSet) {
 		if (resultSet != null && !resultSet.isEmpty()) {
 			Map<String, String> mp = new LinkedHashMap<String, String>();
