@@ -1,9 +1,10 @@
 package io.epopeia.authorization.bo;
 
 import java.util.Calendar;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
@@ -85,25 +86,13 @@ public class ParameterBO {
 						.findByCodigoContaTitular(codigoContaTitular));
 	}
 
-	/**
-	 * TODO: Convert to use stream with collector in java 8
-	 */
 	private Map<String, String> convertResultSetIntoMap(List<AuthorizationParameter> resultSet) {
-		if (resultSet != null && !resultSet.isEmpty()) {
-			Map<String, String> mp = new LinkedHashMap<String, String>();
-			for (AuthorizationParameter kp : resultSet) {
-				Parameter p = kp.getParametro();
-				if (p != null) {
-					Calendar now = Calendar.getInstance();
-					Calendar exp = kp.getDataExpiracao() == null ? now : kp.getDataExpiracao();
-					if (exp.compareTo(now) >= 0) {
-						mp.put(p.getIdentificador(), kp.getValor());
-					}
-				}
-			}
-			return mp;
-		}
-		return null;
+		final Optional<List<AuthorizationParameter>> oResultSet = Optional.ofNullable(resultSet);
+		return oResultSet.orElse(null).stream()
+			.filter(kp -> Optional.ofNullable(kp.getDataExpiracao()).get().compareTo(Calendar.getInstance()) >= 0)
+			.collect(Collectors.toMap(
+				kp -> Optional.ofNullable(kp.getParametro()).orElseGet(Parameter::new).getIdentificador(),
+				AuthorizationParameter::getValor)
+			);
 	}
-
 }
